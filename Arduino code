@@ -1,0 +1,98 @@
+int robot1 = 2;
+int robot2 = 3;
+int robot3 = 4;
+int robot4 = 5;
+// defines pins numbers
+const int trigPin = 7;
+const int echoPin = 6;
+// defines variables
+long duration;
+int distance;
+void setup() {
+pinMode(robot1, OUTPUT);
+pinMode(robot2, OUTPUT);
+pinMode(robot3, OUTPUT);
+pinMode(robot4, OUTPUT);
+pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+Serial.begin(9600);
+}
+void loop() {
+if (Serial.available() > 0) {
+char c = Serial.read();
+Serial.println(c);
+if (c == 'L') {
+left_movement();
+}
+if (c == 'B') {
+back_movement();
+}
+if (c == 'R') {
+right_movement();
+}
+if (c == 'S') {
+stop_robot();
+}
+if (c == 'F') {
+forward_movement();
+}
+}
+// Clears the trigPin
+digitalWrite(trigPin, LOW);
+delayMicroseconds(2);
+// Sets the trigPin on HIGH state for 10 micro seconds
+digitalWrite(trigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin, LOW);
+Reads the echoPin, returns the sound wave travel time in microseconds
+duration = pulseIn(echoPin, HIGH);
+// Calculating the distance
+distance = duration * 0.034 / 2;
+// Prints the distance on the Serial Monitor
+Serial.print("Distance: ");
+Serial.println(distance);
+if (distance < 10) {
+stop_robot();
+}
+delay(100);
+}
+void forward_movement() {
+Serial.println("FORWARD");
+digitalWrite(robot1, HIGH);
+digitalWrite(robot2, LOW);
+digitalWrite(robot3, HIGH);
+digitalWrite(robot4, LOW);
+delay(1000);
+}
+void back_movement() {
+Serial.println("REVERSE");
+digitalWrite(robot1, LOW);
+digitalWrite(robot2, HIGH);
+digitalWrite(robot3, LOW);
+digitalWrite(robot4, HIGH);
+delay(1000);
+}
+void left_movement() {
+Serial.println("LEFT");
+digitalWrite(robot1, HIGH);
+digitalWrite(robot2, LOW);
+digitalWrite(robot3, LOW);
+digitalWrite(robot4, HIGH);
+delay(1000);
+}
+void right_movement() {
+Serial.println("RIGHT");
+digitalWrite(robot1, LOW);
+digitalWrite(robot2, HIGH);
+digitalWrite(robot3, HIGH);
+digitalWrite(robot4, LOW);
+delay(1000);
+}
+void stop_robot() {
+Serial.println("STOP");
+digitalWrite(robot1, LOW);
+digitalWrite(robot2, LOW);
+digitalWrite(robot3, LOW);
+digitalWrite(robot4, LOW);
+delay(1000);
+}
